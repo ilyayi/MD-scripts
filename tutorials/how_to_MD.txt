@@ -1,0 +1,20 @@
+1. create a system 
+	molecule in VMD, save as xyz
+	surface in Vesta, save as xyz
+	convert xyz to bgf using openbabel
+	minimize their energies using DFT
+	make sure that BGF files comply to standard format
+	use combineBGF script from ATLAS-toolkit
+	USE OPENBABEL INSTEAD OF VMD TO CONVERT INTO BGF!!!
+	
+2. edit
+	ff's - using python script to use proper ones
+	sim box - use console in vmd to draw pbc from bgf, edit to have only one
+	corner atom be cut through, using 1/2 unitcell for x and 1 unitcell for y,
+	have vacuum from top and bottom
+	
+3. create Lammps Input files
+	use createLammpsInput script from ATLAS-toolkit
+	edit the 'in' file
+4. benchmark using this script:	
+	
