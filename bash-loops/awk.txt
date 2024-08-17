@@ -1,0 +1,17 @@
+saving as a file:
+{
+        if($1 ~ /unit-cell/)
+                volume[FILENAME]=$4;
+        else if ($1 ~ /!/)
+                energy[FILENAME]=$5
+}
+
+
+END{for (i in volume) print i, volume[i]/1.88973**3, energy[i]}
+
+running as:
+awk -f cool_shit.awk nanobub.alat*.out | sort -n -k 2
+
+line command:
+awk '{if($1 ~ /unit-cell/) volume[FILENAME]=$4;else if ($1 ~ /!/)energy[FILENAME]=$5} END{for (i in volume) print i, volume[i]/1.88973**3, energy[i]}' nanobub.alat*.out | sort -n -k 2
+

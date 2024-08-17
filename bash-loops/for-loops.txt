@@ -1,0 +1,154 @@
+SED for Benchmarking
+for i in 1 2 4 8
+
+> do
+
+> next=$((i*2))
+
+> sed "s/--ntasks-per-node=${i}/--ntasks-per-node=${next}/g" "dmp-edge${i}.lammps.slurm" > "dmp-edge${next}.lammps.slurm"
+
+> done
+
+
+MKDIR for Directories
+for i in dmp ilya nik; do
+> for j in edge slab step; do
+mkdir -p "${i}-${j}"
+mv "${i}-${j}-ag.bgf" "${i}-${j}"
+> done
+> done
+
+
+CREATE LAMMPS INPUT
+for i in dmp ilya nik; do
+> for j in edge slab step; do
+> cd "${i}-${j}"
+> createLammpsInput -b "${i}-${j}-ag.bgf" -f "/home/imazalov/rimse24/ffs/dmp-v2.gaff.ff /home/imazalov/rimse24/ffs/AgEAM.ff" -s "${i}-${j}-run"
+> cd ..
+> done
+> done
+
+
+CHANGE IN. FILE IN EACH DIRECTORY
+for i in dmp ilya nik; do
+> for j in edge slab step; do
+> cp in.slab "${i}-${j}"
+> cd "${i}-${j}"
+> mv in.slab "in.${i}-${j}-run1"
+> sed -i 's/data.iqmol/data.${i}-${j}-run'
+> cd ..
+> done
+> done
+
+
+for i in dmp ilya nik; do
+> for j in slab step; do
+> cp in.slab "${i}-${j}"
+> cd "${i}-${j}"
+> sed "s/data.iqmol/data.${i}-${j}-run/gi" in.slab
+> mv in.slab "in.${i}-${j}-run2"
+> cd ..
+> done
+> done
+ADD CD AFTER CP!
+
+Worked:
+for i in dmp ilya nik; do
+for j in edge; do
+cp in.slab "${i}-${j}"
+cd "${i}-${j}"
+mv "in.${i}-${j}-run" "in.${i}-${j}-run0"
+sed "s/data.iqmol/"data.${i}-${j}-run"/gi" in.slab > "in.${i}-${j}-run"
+cd ..
+done
+done
+
+
+Adjusting slurm files:
+account csd.. > csd799
+num of cores
+time
+/home/tpascal/codes/bin/lmp_expanse > /expanse/lustre/projects/csd799/tpascal/codes/bin/lmp_expanse
+Adjust in. files:
+change Ag_v2.eam.fs.real to /home/imazalov/rimse24/ffs/Ag_v2.eam.fs.real
+change gAgssian > gaussian
+
+WORKED:
+for i in nik; do
+for j in slab step; do
+cd "${i}-${j}"
+sed -i "s/csd626/csd799/g" "12-${i}-${j}-run.lammps.slurm"		-good
+sed -i "s/--ntasks-per-node=16/--ntasks-per-node=2/g" "12-${i}-${j}-run.lammps.slurm"	-good
+sed -i "s/--time=10:0:0/--time=48:00:0/g" "12-${i}-${j}-run.lammps.slurm"	-good
+sed -i "s/rtemp=298/rtemp=298.15/g" "12-${i}-${j}-run.lammps.slurm"
+sed -i "s+home/tpascal/codes/bin/lmp_expanse+expanse/lustre/projects/csd799/tpascal/codes/bin/lmp_expanse+g" "12-${i}-${j}-run.lammps.slurm"
+sed -i "s+Ag_v2.eam.fs.real+/home/imazalov/rimse24/ffs/Ag_v2.eam.fs.real+g" "in.12-${i}-${j}-run"
+cd ..
+done
+done//
+
+
+CREATING BENCHMARK SLURM FILES
+Worked:
+for i in dmp; do
+> for j in step; do
+> cd "${i}-${j}"
+> mv "${i}-${j}-run.lammps.slurm" "${i}-${j}-run1.lammps.slurm"
+> for k in 1 2 4 8; do
+> next=$((k*2))
+> sed "s/--ntasks-per-node=${k}/--ntasks-per-node=${next}/g" "${i}-${j}-run${k}.lammps.slurm" > "${i}-${j}-run${next}.lammps.slurm"
+> done
+> cd ..
+> done
+> done
+
+for i in ilya; do
+> for j in slab; do
+> cd "${i}-${j}"
+> for k in 1 2 4 8 16; do
+> sbatch "${i}-${j}-run${k}.lammps.slurm"
+> sleep 11m
+> mv "/expanse/lustre/scratch/imazalov/temp_project/md/lammps/{i}-{j}-run/298K/{i}-{j}-run.298K.equil.lammps.log" results
+> mv results "results${k}"
+> done
+> done
+> done
+
+modify all slurm files, mv log file from scratch directory
+
+
+Modify temperature and submit all jobs
+
+
+Run the sims for each:
+sbatch dmp-edge-run.lammps.slurm
+Adjust the results folder:
+mv results results1
+
+
+GREP TOTAL ENERGY FROM QE
+for i in $(seq 2.0 0.2 4.0); do
+> grep ! "nanobub.alat${i}.out" >> energy.txt
+> done
+
+
+Prepare sims from benchmark to run:
+for i in ilya nik; do
+for j in slab step; do
+cp in.annealing-updated "${i}-${j}"
+cd "${i}-${j}"
+mv "in.12-${i}-${j}-run" "in.12-${i}-${j}-run1"
+mv in.annealing-updated "in.12-${i}-${j}-run"
+cd ..
+done
+done
+
+for i in dmp ilya nik; do
+for j in edge slab step; do
+cp in.slab1 "${i}-${j}"
+cd "${i}-${j}"
+mv "in.${i}-${j}-run" "in.${i}-${j}-run1337"
+sed "s/data.iqmol/"data.${i}-${j}-run"/gi" in.slab1 > "in.${i}-${j}-run"
+cd ..
+done
+done

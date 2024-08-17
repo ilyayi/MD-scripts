@@ -1,0 +1,30 @@
+1. Create a file with #!/bin/bash at the top and save it as .sh:
+#!/bin/bash
+
+filename="$1"
+username="$2"
+
+                cp "${filename}.lammps.slurm" "${filename}1.lammps.slurm"
+                sed -i "s/--ntasks-per-node=16/--ntasks-per-node=1/g" "${filename}1.lammps.slurm"
+                sed -i "s/csd626/csd799/g" "${filename}1.lammps.slurm"
+                sed -i "s/--time=10:0:0/--time=00:10:0/g" "${filename}1.lammps.slurm"
+                sed -i "s/--partition=shared/--partition=debug/g" "${filename}1.lammps.slurm"
+                for k in 1 2 4 8 16; do
+                        next=$((k*2))
+                        mkdir  "${filename}-run${next}"
+                        sed "s/--ntasks-per-node=${k}/--ntasks-per-node=${next}/g" "${filename}-run${k}.lammps.slurm" > "${filename}-run${next}.lammps.slurm"
+                        sbatch "${filename}-run${next}.lammps.slurm"
+                        sleep 11m
+                        mv "/expanse/lustre/scratch/$username/temp_project/md/lammps/${filename}-run/298K/${filename}-run.298K.equil.lammps.log" "${filename}-run${next}"
+                        cd "${filename}-run${next}"
+                        total-steps = grep 'run' in.${filename} | awk '{sum += $2} END {print sum}'
+                        grep 'Step' ${filename}.298K.equil.lammps.log | tail -n 1 | awk '{print $3}' | awk '{print ($total-steps/($1*6))*${next}}' >> ../steps.txt
+                        cd ..
+                        
+                done
+        done
+done
+
+1.5 Adjust the filename and temperature in the PATH
+2. Use chmod -x filename.sh to make it an executable
+3. Use nohup ./filename.sh & to make it run without active terminal session
