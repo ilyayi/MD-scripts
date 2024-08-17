@@ -1,0 +1,2 @@
+/expanse/lustre/projects/csd799/tpascal/scripts/addSolvent.pl -i SiO2Nano.bgf -f "/expanse/lustre/projects/csd799/tpascal/ff/AMBER/parm19.dat /expanse/lustre/projects/csd799/tpascal/ff/AMBER/frcmod.parmbsc1 /expanse/lustre/projects/csd799/tpascal/ff/AMBER/frcmod.ionsjc_tip3p /expanse/lustre/projects/csd799/tpascal/ff/UFF.ff" -w TIP3 -n "xyz: +/- 10"  -s SiO2Nano.solv.bgf
+
