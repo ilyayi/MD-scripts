@@ -1,0 +1,5 @@
+1. Find out the boundaries 
+	/home/imazalov/ATLAS-toolkit/scripts/getBounds.pl  -b Pu-10.bgf
+
+2. Open in vmd, use the following command
+	sqrt((x-20)^2+(y-23)^2+(z-53_)^2)<23
