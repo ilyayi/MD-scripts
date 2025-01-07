@@ -1,0 +1,2 @@
+run the sim - sbatch ch4.slr
+check the status - squeue -u imazalov

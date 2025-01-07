@@ -1,0 +1,60 @@
+0. Compile 2pt, delete current executable. 
+0.5 Unload and load the modules
+0.75 make --> make clean
+1. Run a lammps md simulation with section of v_atomEng  like this:
+print                            .
+print ============================================================
+print "try to get .eng files"
+print ============================================================
+print                             .
+
+compute         atomPE all pe/atom
+compute         atomKE all ke/atom
+variable        atomEng atom c_atomPE+c_atomKE
+
+fix             dynamics all nvt temp ${rtemp} ${rtemp} 100.0
+
+timestep        1.0
+thermo          4
+thermo_style    custom etotal ke temp pe ebond eangle edihed eimp evdwl ecoul elong ebond press vol
+thermo_modify   line multi
+timestep        1.0
+dump            atomData all custom 4 ${sname}_2pt.lammps id type xu yu zu vx vy vz v_atomEng
+run             200000 #200ps
+unfix           dynamics
+undump          atomData
+
+2. Obtain the .lammps trajectory from the md simulation
+	cp /expanse/lustre/scratch/imazalov/temp_project/md/lammps/12-ilya-step-run/298.15K/Au111_1dmp.min.lammps
+3. Create the .grps file for groups of atoms
+	1st group - slab, 2nd group - ligands
+4. Have the .in file
+5. Create a slurm job for running the spectroscopy
+
+for i in nik; do
+for j in step slab; do
+cd /expanse/lustre/projects/csd799/imazalov
+mkdir "${i}-${j}"
+cd "${i}-${j}"
+cp "/expanse/lustre/scratch/imazalov/temp_project/md/lammps/12-${i}-${j}-run/298.15K/Au111_1dmp_2pt.pwr" .
+cp "/expanse/lustre/scratch/imazalov/temp_project/md/lammps/12-${i}-${j}-run/298.15K/Au111_1dmp_2pt.out.log" .
+cp "/expanse/lustre/scratch/imazalov/temp_project/md/lammps/12-${i}-${j}-run/298.15K/Au111_1dmp_2pt.thermo" . 
+cd ..
+done
+done
+
+6. plot the results using GNUplot
+	0. login to supercomputer using ssh -X name@login.expanse.sdsc.edu
+	1. first, install it: module spider gnuplot, module load ...
+	2. then, type gnuplot and paste the following:
+	
+set title "Simulated Raman Spectra" font "Helvetica, 25"
+set xlabel "Frequency (cm^(-1)" font "Helvetica, 20"
+set ylabel "Population" font "Helvetica, 20"
+set tics font "Helvetica, 13"
+set key font "Helvetica, 20"
+plot 'Au111_1dmp_2pt.pwr' every ::2::37503 using 1:24 w lines title "simulated Raman"
+
+	3. adjust 1:2 to reflect the right column (in my case, group two raman data will be column 24)
+	4. adjust 502 to reflect the amount of rows 
+

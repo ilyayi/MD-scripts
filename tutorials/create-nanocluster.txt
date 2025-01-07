@@ -1,0 +1,7 @@
+1.Grab an element from the folder.
+ cp ~/scripts/dat/elements_bgfs/Pu-Plutonium-alpha.bgf ./
+2. Increase it's dimensions
+ ~/scripts/replicate.pl -b Pu-Plutonium-alpha.bgf  -d "10 10 10" -s Pu-10.bgf
+1.5 Convert cif to bgf
+ obabel *cif -OPbS_symm.bgf
+ 

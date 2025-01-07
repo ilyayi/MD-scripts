@@ -1,0 +1,11 @@
+set sel1 [atomselect 0 "all"]   where 0 is the index of molecule and sel1 is var
+
+$sel1 moveto {0 0 0}
+
+
+set mol [atomselect top "all"]
+set diff [measure center $mol]
+$mol moveby {-3.127217903 0.035053291 −1.565386}
+$mol moveby {-3.127 0.035 −1.565}
+
+$mol moveby {-0.251 -0.205 -0.280}

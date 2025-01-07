@@ -1,0 +1,20 @@
+Tutorial on using ATLAS Toolkit
+1. Go to Github, copy the whole repo
+2. git clone it on desired location "git clone https://github.com/atlas-nano/ATLAS-toolkit.git"
+3. enjoy
+
+Tutorial on using the scripts
+0. prepare your files by using zip "zip -r dmp_cube /home/ye/sims/my_project/ag_slab/DMP-cube"
+1. scp the desired file from the file folder to expanse home directory "scp np.zip imazalov@login.expanse.sdsc.edu:/home/imazalov"
+2. unzip the file "unzip ..."
+3. Use the script "perl /home/imazalov/ATLAS-toolkit/scripts/combineBGFs.pl -b "1.bgf 2.bgf 3.bgf 4.bgf 5.bgf 6.bgf 7.bgf 8.bgf 0.bgf" -s comb_dmp_ag.bgf"
+4. scp it back to the desktop "scp imazalov@login.expanse.sdsc.edu:/home/imazalov/np/comb.bgf ."
+5. done
+
+computer_Ohuy228
+
+How to create lammps input files
+1. create a bash alias on the supercomputer
+2. have a ff directory with certain files
+3. createLammpsInput -b comb_dmp_slab.bgf -f "/home/imazalov/rimse24/ffs/dmp-v2.gaff.ff /home/imazalov/rimse24/ffs/AgEAM.ff" -s dmp_slab_run
+4. 
