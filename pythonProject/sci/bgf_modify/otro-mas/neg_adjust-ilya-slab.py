@@ -1,0 +1,113 @@
+def replace_multiple_columns_fixed_width1(source_path, target_path, columns, start_row, end_row, widths):
+    # Read source data
+    with open(source_path, 'r') as file:
+        source_lines = file.readlines()
+
+    # Read target data
+    with open(target_path, 'r') as file:
+        target_lines = file.readlines()
+
+    # Iterate over each pair of source and target lines within the specified range
+    for i, (src_line, tgt_line) in enumerate(
+            zip(source_lines[start_row - 1:end_row], target_lines[start_row - 1:end_row])):
+        src_parts = src_line.split()
+        tgt_parts = tgt_line.split()
+
+        # Replace specified columns if available in both source and target parts
+        for col_index in columns:
+            if len(src_parts) > col_index and len(tgt_parts) > col_index:
+                tgt_parts[col_index] = src_parts[col_index]
+
+
+        # Check if the value in column 12 is negative and adjust the column widths accordingly
+        if len(tgt_parts) > 12 and tgt_parts[12].startswith('-'):
+            current_widths = [11, 2, 6, 4, 4, 5, 10, 10, 9, 7, 2, 2, 10]
+            print('itt made it')
+        else:
+            current_widths = widths
+
+        # Reformat each line according to fixed widths
+        formatted_line = ""
+        current_pos = 0
+        for j, part in enumerate(tgt_parts):
+            if j >= len(current_widths):
+                print(f"Error: Not enough widths specified for column {j}. Needed at least {j + 1} widths.")
+                break
+            next_pos = current_pos + current_widths[j]
+            formatted_line += part.ljust(next_pos - len(formatted_line))
+            current_pos = next_pos
+
+        # Update the target lines with the newly formatted line
+        target_lines[i + start_row - 1] = formatted_line + '\n'
+
+    # Write the modified data back to the target file
+    with open(target_path, 'w') as file:
+        file.writelines(target_lines)
+
+
+# Example usage of the function with paths and widths
+source_file = 'actually-cooked/ilya-step-done.bgf'
+target_file = 'actually-cooked/ilya-step-done.bgf'
+columns_to_replace = []
+column_widths = [11, 2, 6, 4, 4, 5, 10, 10, 9, 7, 2, 3, 10]  # Initial column widths
+
+replace_multiple_columns_fixed_width1(source_file, target_file, columns_to_replace, 13, 21, column_widths)
+
+print("Column replacement with fixed-width formatting attempted.")
+
+def replace_multiple_columns_fixed_width1(source_path, target_path, columns, start_row, end_row, widths):
+    # Read source data
+    with open(source_path, 'r') as file:
+        source_lines = file.readlines()
+
+    # Read target data
+    with open(target_path, 'r') as file:
+        target_lines = file.readlines()
+
+    # Iterate over each pair of source and target lines within the specified range
+    for i, (src_line, tgt_line) in enumerate(
+            zip(source_lines[start_row - 1:end_row], target_lines[start_row - 1:end_row])):
+        src_parts = src_line.split()
+        tgt_parts = tgt_line.split()
+
+        # Replace specified columns if available in both source and target parts
+        for col_index in columns:
+            if len(src_parts) > col_index and len(tgt_parts) > col_index:
+                tgt_parts[col_index] = src_parts[col_index]
+
+
+        # Check if the value in column 12 is negative and adjust the column widths accordingly
+        if len(tgt_parts) > 12 and tgt_parts[12].startswith('-'):
+            current_widths = [10, 3, 6, 4, 4, 5, 10, 10, 9, 7, 2, 2, 10]
+            print('itt made it')
+        else:
+            current_widths = widths
+
+        # Reformat each line according to fixed widths
+        formatted_line = ""
+        current_pos = 0
+        for j, part in enumerate(tgt_parts):
+            if j >= len(current_widths):
+                print(f"Error: Not enough widths specified for column {j}. Needed at least {j + 1} widths.")
+                break
+            next_pos = current_pos + current_widths[j]
+            formatted_line += part.ljust(next_pos - len(formatted_line))
+            current_pos = next_pos
+
+        # Update the target lines with the newly formatted line
+        target_lines[i + start_row - 1] = formatted_line + '\n'
+
+    # Write the modified data back to the target file
+    with open(target_path, 'w') as file:
+        file.writelines(target_lines)
+
+
+# Example usage of the function with paths and widths
+source_file = 'actually-cooked/ilya-step-done.bgf'
+target_file = 'actually-cooked/ilya-step-done.bgf'
+columns_to_replace = []
+column_widths = [10, 3, 6, 4, 4, 5, 10, 10, 9, 7, 2, 3, 10]  # Initial column widths
+
+replace_multiple_columns_fixed_width1(source_file, target_file, columns_to_replace, 22, 85, column_widths)
+
+print("Column replacement with fixed-width formatting attempted.")
