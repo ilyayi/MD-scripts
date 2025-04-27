@@ -1,0 +1,152 @@
+SystemName  Elec-Au-Top
+
+# Atomic coordinates
+NumberOfAtoms 72
+AtomicCoordinatesFormat Ang
+%block AtomicCoordinatesAndAtomicSpecies
+0.832469 1.441879 30.087300 1
+0.832469 4.325637 30.087300 1
+0.832469 7.209396 30.087300 1
+13.319509 2.883758 30.087300 1
+13.319509 5.767516 30.087300 1
+13.319509 8.651275 30.087300 1
+15.816916 1.441879 30.087300 1
+15.816916 4.325637 30.087300 1
+15.816916 7.209396 30.087300 1
+18.314324 2.883758 30.087300 1
+18.314324 5.767516 30.087300 1
+18.314324 8.651275 30.087300 1
+3.329877 2.883758 30.087300 1
+3.329877 5.767516 30.087300 1
+3.329877 8.651275 30.087300 1
+5.827285 1.441879 30.087300 1
+5.827285 4.325637 30.087300 1
+5.827285 7.209396 30.087300 1
+8.324693 2.883758 30.087300 1
+8.324693 5.767516 30.087300 1
+8.324693 8.651275 30.087300 1
+10.822101 1.441879 30.087300 1
+10.822101 4.325637 30.087300 1
+10.822101 7.209396 30.087300 1
+12.487039 1.441879 32.441900 1
+12.487039 4.325637 32.441900 1
+12.487039 7.209396 32.441900 1
+14.984447 2.883758 32.441900 1
+14.984447 5.767516 32.441900 1
+14.984447 8.651275 32.441900 1
+17.481854 1.441879 32.441900 1
+17.481854 4.325637 32.441900 1
+17.481854 7.209396 32.441900 1
+2.497408 1.441879 32.441900 1
+2.497408 4.325637 32.441900 1
+2.497408 7.209396 32.441900 1
+19.979262 2.883758 32.441900 1
+19.979262 5.767516 32.441900 1
+19.979262 8.651275 32.441900 1
+4.994815 2.883758 32.441900 1
+4.994815 5.767516 32.441900 1
+4.994815 8.651275 32.441900 1
+7.492224 1.441879 32.441900 1
+7.492224 4.325637 32.441900 1
+7.492224 7.209396 32.441900 1
+9.989631 2.883758 32.441900 1
+9.989631 5.767516 32.441900 1
+9.989631 8.651275 32.441900 1
+1.664938 2.883758 34.796500 1
+1.664938 5.767516 34.796500 1
+1.664938 8.651275 34.796500 1
+11.654571 2.883758 34.796500 1
+11.654571 5.767516 34.796500 1
+11.654571 8.651275 34.796500 1
+14.151979 1.441879 34.796500 1
+14.151979 4.325637 34.796500 1
+14.151979 7.209396 34.796500 1
+16.649386 2.883758 34.796500 1
+16.649386 5.767516 34.796500 1
+16.649386 8.651275 34.796500 1
+19.146794 1.441879 34.796500 1
+19.146794 4.325637 34.796500 1
+19.146794 7.209396 34.796500 1
+4.162346 1.441879 34.796500 1
+4.162346 4.325637 34.796500 1
+4.162346 7.209396 34.796500 1
+6.659754 2.883758 34.796500 1
+6.659754 5.767516 34.796500 1
+6.659754 8.651275 34.796500 1
+9.157163 1.441879 34.796500 1
+9.157163 4.325637 34.796500 1
+9.157163 7.209396 34.796500 1
+%endblock AtomicCoordinatesAndAtomicSpecies
+
+# UNIT CELL
+LatticeConstant       1.0 Ang 
+%block LatticeVectors
+       19.979263         0.000000         0.0000000
+        0.000000         8.651275         0.0000000
+        0.000000         0.000000         34.796500
+%endblock LatticeVectors
+
+
+# K-points
+
+%block kgrid_Monkhorst_Pack
+1   0   0   0.0
+0   1   0   0.0
+0   0   50  0.0
+%endblock kgrid_Monkhorst_Pack
+
+
+# Chemical species
+
+NumberOfSpecies 1
+%block ChemicalSpeciesLabel
+  1  79 Au 
+%endblock ChemicalSpeciesLabel
+
+# Basis set variables
+PAO.BasisType split
+PAO.BasisSize DZP
+
+# General variables
+
+#NeglNonOverlapInt   True
+ElectronicTemperature  300 K
+SolutionMethod    diagon 
+MeshCutoff           500. Ry
+xc.functional         GGA           # Exchange-correlation functional
+xc.authors            PBE 
+SpinPolarized false 
+          # Exchange-correlation version
+
+# SCF variables
+
+DM.MixSCF1   T
+MaxSCFIterations      100           # Maximum number of SCF iter
+DM.MixH               T    
+DM.MixingWeight       0.03          # New DM amount for next SCF cycle
+DM.Tolerance          1.d-4         # Tolerance in maximum difference
+DM.UseSaveDM          true          # to use continuation files
+DM.NumberPulay         6
+
+# MD variables
+
+MD.FinalTimeStep 1
+MD.TypeOfRun CG 
+MD.NumCGsteps     000
+MD.UseSaveXV     .true.
+
+# Output variables
+
+WriteMullikenPop                1
+WriteBands                      .false.
+SaveRho                         .false.
+SaveDeltaRho                    .false.
+SaveHS                          .false.
+SaveElectrostaticPotential      True
+SaveTotalPotential              no
+WriteCoorXmol                   .true.
+WriteMDXmol                     .true.
+WriteMDhistory                  .false.
+WriteEigenvalues                yes
+
+TS.HS.Save T
