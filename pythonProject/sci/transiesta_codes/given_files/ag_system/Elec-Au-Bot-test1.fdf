@@ -1,0 +1,140 @@
+SystemName  Elec-Ag-Bot
+SystemLabel elec_bot
+
+# Atomic coordinates
+NumberOfAtoms 60
+AtomicCoordinatesFormat Ang
+%block AtomicCoordinatesAndAtomicSpecies
+0.000000 3.335732 4.717437 1
+11.555313 3.335732 4.717437 1
+8.666485 3.335732 4.717437 1
+5.777657 3.335732 4.717437 1
+2.888828 3.335732 4.717437 1
+0.000000 8.339329 4.717437 1
+11.555313 8.339329 4.717437 1
+8.666485 8.339329 4.717437 1
+5.777657 8.339329 4.717437 1
+2.888828 8.339329 4.717437 1
+12.999726 0.833934 4.717435 1
+10.110897 0.833934 4.717435 1
+7.222069 0.833934 4.717435 1
+4.333241 0.833934 4.717435 1
+1.444412 0.833934 4.717435 1
+12.999726 5.837531 4.717435 1
+10.110897 5.837531 4.717435 1
+7.222069 5.837531 4.717435 1
+4.333241 5.837531 4.717435 1
+1.444412 5.837531 4.717435 1
+0.000000 1.667866 2.358719 1
+11.555313 1.667866 2.358719 1
+8.666485 1.667866 2.358719 1
+5.777657 1.667866 2.358719 1
+2.888828 1.667866 2.358719 1
+0.000000 6.671463 2.358719 1
+11.555313 6.671463 2.358719 1
+8.666485 6.671463 2.358719 1
+5.777657 6.671463 2.358719 1
+2.888828 6.671463 2.358719 1
+12.999726 4.169666 2.358716 1
+10.110897 4.169666 2.358716 1
+7.222069 4.169666 2.358716 1
+4.333241 4.169666 2.358716 1
+1.444412 4.169666 2.358716 1
+12.999726 9.173263 2.358716 1
+10.110897 9.173263 2.358716 1
+7.222069 9.173263 2.358716 1
+4.333241 9.173263 2.358716 1
+1.444412 9.173263 2.358716 1
+0.000000 0.000000 0.000000 1
+0.000000 5.003597 0.000000 1
+11.555313 0.000000 0.000000 1
+11.555313 5.003597 0.000000 1
+8.666485 0.000000 0.000000 1
+8.666485 5.003597 0.000000 1
+5.777657 0.000000 0.000000 1
+5.777657 5.003597 0.000000 1
+2.888828 0.000000 0.000000 1
+2.888828 5.003597 0.000000 1
+12.999726 2.501800 0.000000 1
+10.110897 2.501800 0.000000 1
+7.222069 2.501800 0.000000 1
+4.333241 2.501800 0.000000 1
+1.444412 2.501800 0.000000 1
+12.999726 7.505397 0.000000 1
+10.110897 7.505397 0.000000 1
+7.222069 7.505397 0.000000 1
+4.333241 7.505397 0.000000 1
+1.444412 7.505397 0.000000 1
+%endblock AtomicCoordinatesAndAtomicSpecies
+
+# UNIT CELL
+LatticeConstant       1.0 Ang 
+%block LatticeVectors
+       14.444141         0.000000         0.000000
+        0.000000        10.007195         0.000000
+        0.000000         0.000000         7.076153
+%endblock LatticeVectors
+
+
+# K-points
+
+%block kgrid_Monkhorst_Pack
+1   0   0   0.0
+0   1   0   0.0
+0   0   50  0.0
+%endblock kgrid_Monkhorst_Pack
+
+
+# Chemical species
+
+NumberOfSpecies 1
+%block ChemicalSpeciesLabel
+  1  47 Ag 
+%endblock ChemicalSpeciesLabel
+
+PAO.BasisType split
+PAO.BasisSize DZP
+
+# General variables
+
+#NeglNonOverlapInt   True
+ElectronicTemperature  300 K
+SolutionMethod    diagon 
+MeshCutoff           500. Ry
+xc.functional         GGA           # Exchange-correlation functional
+xc.authors            PBE 
+SpinPolarized false 
+          # Exchange-correlation version
+
+# SCF variables
+
+DM.MixSCF1   T
+MaxSCFIterations      250           # Maximum number of SCF iter
+DM.MixH               T    
+DM.MixingWeight       0.03          # New DM amount for next SCF cycle
+DM.Tolerance          1.d-4         # Tolerance in maximum difference
+DM.UseSaveDM          true          # to use continuation files
+DM.NumberPulay         6
+
+# MD variables
+
+MD.FinalTimeStep 1
+MD.TypeOfRun CG 
+MD.NumCGsteps     000
+MD.UseSaveXV     .true.
+
+# Output variables
+
+WriteMullikenPop                1
+WriteBands                      .false.
+SaveRho                         .false.
+SaveDeltaRho                    .false.
+SaveHS                          .false.
+SaveElectrostaticPotential      True
+SaveTotalPotential              no
+WriteCoorXmol                   .true.
+WriteMDXmol                     .true.
+WriteMDhistory                  .false.
+WriteEigenvalues                yes
+
+TS.HS.Save T
